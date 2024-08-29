@@ -1,0 +1,174 @@
+name: ridealike
+description: Go farther.
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.1.0+5
+
+environment:
+  sdk: ">=2.12.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  carousel_slider: ^4.2.1
+  http: ^0.13.0
+  flutter_rating_bar: ^4.0.0
+  path_provider: ^2.1.1
+  path: ^1.6.4
+  image_picker: ^1.0.7
+  flutter_screenutil: ^5.9.0
+  google_maps_flutter: ^2.5.0
+  search_map_place_updated: ^0.0.4
+  some_calendar: ^1.3.0
+  jiffy: ^5.0.0
+  geocoder_plus: ^0.0.1
+  info_popup: ^4.3.1
+  lottie: ^2.6.0
+  google_sign_in: ^6.2.1
+  auto_size_text: ^3.0.0
+  geolocator: ^10.1.0
+  fluttertoast: ^8.2.4
+  masked_text: ^1.1.2
+  smooth_star_rating_null_safety: ^1.0.4+2
+  location: ^5.0.3
+  bloc: ^7.2.0
+  find_dropdown: ^1.0.0
+#  advance_image_picker: ^0.1.7+1
+  flutter_bloc: ^7.2.0
+  rxdart: ^0.27.7
+  intl: ^0.17.0
+  url_launcher: ^6.1.14
+  web_socket_channel: ^2.4.0
+  mvc_pattern: ^8.4.0
+  async_builder: ^1.2.1
+  conditioned: ^0.1.0-dev.1
+  multi_image_picker_plus: ^0.0.4
+  image: ^4.1.6
+  dio: ^5.4.0
+  dio_smart_retry: ^6.0.0
+  event_bus: ^2.0.0
+  visibility_detector: ^0.4.0+2
+  timeago: ^3.0.2
+  uuid: ^3.0.7
+  flutter_secure_storage: ^9.0.0
+  after_layout: ^1.0.7+2
+  pdf: ^3.10.0
+  printing: ^5.11.0
+  flutter_svg: ^2.0.9
+  progress_dialog_null_safe: ^1.0.7
+  no_context_navigation: ^2.1.2
+  flutter_easyloading: ^3.0.5
+  money2: ^3.3.0
+  #advance_pdf_viewer: ^2.0.1
+  advance_pdf_viewer2: ^2.0.5+1
+  pretty_dio_logger: ^1.1.1
+  country_code_picker: ^3.0.0
+  flutterlifecyclehooks: ^4.0.0
+  shared_preferences: ^2.2.2
+  permission_handler: ^11.3.0
+  mask_text_input_formatter: ^2.9.0
+  back_button_interceptor: ^7.0.0
+  flutter_widget_from_html: ^0.14.9
+  webview_flutter: ^4.4.2
+  anim_search_bar: ^2.0.3
+  toggle_switch: ^1.4.0
+  flutter_local_notifications: ^8.2.0
+  persistent_bottom_nav_bar: ^5.0.2
+  flutter_countdown_timer: ^4.1.0
+  flutter_app_badger:
+  shimmer: ^3.0.0
+  photo_view: ^0.15.0
+  flutter_credit_card:
+  flutter_date_pickers: ^0.4.2
+  fluster: ^1.2.0
+#  top_snackbar_flutter: ^3.1.0
+  firebase_core: ^2.15.1
+  firebase_dynamic_links: ^5.4.13
+  firebase_analytics: ^10.8.5
+  firebase_crashlytics: ^3.4.7
+  firebase_remote_config: ^4.3.6
+  firebase_messaging: ^14.7.17
+  package_info_plus: ^4.0.2
+  mixpanel_flutter: ^2.2.0
+  cached_network_image: ^3.3.0
+  pinch_zoom: ^2.0.0
+  share_plus: ^7.2.1
+  top_snackbar_flutter:
+    path: ./lib/libs/top_snackbar_flutter/
+  widget_to_image:
+    git: https://github.com/ivofernandes/widget_to_image.git
+  flutter_uxcam: ^2.5.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+dependency_overrides:
+  intl: ^0.17.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - images/
+    - icons/
+    - fonts/
+    - svg/
+
+  fonts:
+    - family: RobotoRegular
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+
+    - family: Urbanist
+      fonts:
+        - asset: fonts/Urbanist-Regular.ttf
+        - asset: fonts/Urbanist-Bold.ttf
+        - asset: fonts/Urbanist-ExtraBold.ttf
+
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Bold.ttf
+        - asset: fonts/Roboto-Medium.ttf
+
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-Bold.ttf
+        - asset: fonts/OpenSans-Regular.ttf
+
+    - family: SFProDisplayBold
+      fonts:
+        - asset: fonts/SFProDisplay-Bold.ttf
+
+    - family: SFProDisplaySemibold
+      fonts:
+        - asset: fonts/SFProDisplay-Semibold.ttf
+
+    - family: SFProDisplayRegular
+      fonts:
+        - asset: fonts/SFProText-Regular.ttf
+
+    - family: Mosk
+      fonts:
+        - asset: fonts/Mosk-Bold-700.ttf
+
+    - family: Avenir
+      fonts:
+        - asset: fonts/Avenir-Medium.ttf
+
+    - family: GillSansMT
+      fonts:
+        - asset: fonts/gill-sans-mt.ttf

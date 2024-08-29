@@ -1,0 +1,1 @@
+enum SwapType { initial, ongoing, done }

@@ -1,0 +1,94 @@
+{
+  "project_info": {
+    "project_number": "457227687209",
+    "project_id": "ridealike-c1381",
+    "storage_bucket": "ridealike-c1381.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457227687209:android:4dfde5e26436389a0f9338",
+        "android_client_info": {
+          "package_name": "com.example.ridealike"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457227687209-6igmaj2r2tibfeesotv4ug777a6k2h3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Awn1bsBJiSouHz4tFErhrAnT8XKbDdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457227687209-6igmaj2r2tibfeesotv4ug777a6k2h3l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "457227687209-8rhpcpg9vdj9qc3oqmd65gltdbqpg2r5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ridealike.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457227687209:android:3b080ba7c3a86e590f9338",
+        "android_client_info": {
+          "package_name": "com.ridealike.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457227687209-6igmaj2r2tibfeesotv4ug777a6k2h3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Awn1bsBJiSouHz4tFErhrAnT8XKbDdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457227687209-6igmaj2r2tibfeesotv4ug777a6k2h3l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "457227687209-8rhpcpg9vdj9qc3oqmd65gltdbqpg2r5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ridealike.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1",
+  "installed": {
+    "client_id": "457227687209-7o206e8e0sg9igqbbkdiaiohrunekg9e.apps.googleusercontent.com",
+    "project_id": "ridealike-c1381",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "redirect_uris": [
+      "urn:ietf:wg:oauth:2.0:oob",
+      "http://localhost"
+    ]
+  }
+
+}

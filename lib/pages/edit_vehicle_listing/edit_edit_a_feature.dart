@@ -1,0 +1,713 @@
+// import 'package:flutter/material.dart';
+// import 'package:flutter/cupertino.dart';
+//
+// import 'package:http/http.dart' as http;
+// import 'dart:convert' show json;
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+//
+// import 'package:image_picker/image_picker.dart';
+// import 'dart:io';
+// import 'package:path/path.dart' as Path;
+// import 'package:async/async.dart';
+//
+// import 'package:flutter/services.dart';
+//
+//
+// // const SERVER_IP = 'https://api.profile.ridealike.com';
+// final storage = new FlutterSecureStorage();
+//
+// int _descriptionCharCount = 0;
+//
+// class EditEditFeature extends StatefulWidget {
+//   @override
+//   State createState() => EditEditFeatureState();
+// }
+//
+// class EditEditFeatureState extends  State<EditEditFeature> {
+//
+//   final TextEditingController _nameController = TextEditingController();
+//   final TextEditingController _descriptionController = TextEditingController();
+//
+//   bool _isButtonDisabled;
+//
+//   bool _nameShowInput = false;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//
+//     Future.delayed(Duration.zero,() async {
+//       final Map _receivedData = ModalRoute.of(context).settings.arguments;
+//
+//       setState(() {
+//         _nameController.text = _receivedData['_data']['Name'];
+//         _descriptionController.text = _receivedData['_data']['Description'];
+//
+//         for(var i = 0; i < _receivedData['_data']['ImageIDs'].length; i++){
+//           if (i == 0){
+//             _imageID1 = _receivedData['_data']['ImageIDs'][i];
+//           } else if (i == 1) {
+//             _imageID2 = _receivedData['_data']['ImageIDs'][i];
+//           } else if (i == 2) {
+//             _imageID3 = _receivedData['_data']['ImageIDs'][i];
+//           }
+//         }
+//       });
+//     });
+//
+//     _isButtonDisabled = true;
+//   }
+//
+//   void _settingModalBottomSheet(context, _imgOrder){
+//     showModalBottomSheet(
+//       context: context,
+//       builder: (BuildContext bc){
+//         return Container(
+//           child: new Wrap(
+//             children: <Widget>[
+//               Padding(
+//                 padding: EdgeInsets.all(12.0),
+//                 child: Column(
+//                   children: <Widget>[
+//                     Container(
+//                       child: Stack(
+//                         children: <Widget>[
+//                           GestureDetector(
+//                             onTap: () {
+//                               Navigator.pop(context);
+//                             },
+//                             child: Text('Cancel',
+//                               style: TextStyle(
+//                                 fontFamily: 'Urbanist',
+//                                 fontSize: 16,
+//                                 color: Color(0xFFF68E65),
+//                               ),
+//                             ),
+//                           ),
+//                           Align(
+//                             alignment: Alignment.center,
+//                             child: Text('Attach photo',
+//                               style: TextStyle(
+//                                 fontFamily: 'Urbanist',
+//                                 fontSize: 16,
+//                                 color: Color(0xFF371D32),
+//                               ),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               new ListTile(
+//                 leading: Image.asset('icons/Take-Photo_Sheet.png'),
+//                 title: Text('Take photo',
+//                   textAlign: TextAlign.start,
+//                   style: TextStyle(
+//                     fontFamily: 'Urbanist',
+//                     fontSize: 16,
+//                     color: Color(0xFF371D32),
+//                   ),
+//                 ),
+//                 onTap: () {
+//                   Navigator.pop(context);
+//                   pickeImageThroughCamera(_imgOrder);
+//                 },
+//               ),
+//               Divider(color: Color(0xFFABABAB)),
+//               new ListTile(
+//                 leading: Image.asset('icons/Attach-Photo_Sheet.png'),
+//                 title: Text('Attach photo',
+//                   textAlign: TextAlign.start,
+//                   style: TextStyle(
+//                     fontFamily: 'Urbanist',
+//                     fontSize: 16,
+//                     color: Color(0xFF371D32),
+//                   ),
+//                 ),
+//                 onTap: () {
+//                   Navigator.pop(context);
+//                   pickeImageFromGallery(_imgOrder);
+//                 },
+//               ),
+//               Divider(color: Color(0xFFABABAB)),
+//             ],
+//           ),
+//         );
+//       }
+//     );
+//   }
+//
+//   File _imageFile1;
+//   File _imageFile2;
+//   File _imageFile3;
+//
+//   String _imageID1 = '';
+//   String _imageID2 = '';
+//   String _imageID3 = '';
+//
+//   pickeImageThroughCamera(int i) async {
+//     final picker = ImagePicker();
+//
+//     final pickedFile = await picker.getImage(
+//       source: ImageSource.camera,
+//       imageQuality: 50,
+//       maxHeight: 500,
+//       maxWidth: 500,
+//       preferredCameraDevice: CameraDevice.rear
+//     );
+//
+//     switch (i) {
+//       case 1: {
+//         setState(() {_imageFile1 = File(pickedFile.path);});
+//
+//         var imageRes = await uploadImage(File(pickedFile.path));
+//
+//         if (json.decode(imageRes.body!)['Status'] == 'success') {
+//           setState(() {
+//             _imageID1 = json.decode(imageRes.body!)['FileID'];
+//           });
+//         }
+//       }
+//       break;
+//       case 2: {
+//         setState(() {_imageFile2 = File(pickedFile.path);});
+//
+//         var imageRes = await uploadImage(File(pickedFile.path));
+//
+//         if (json.decode(imageRes.body!)['Status'] == 'success') {
+//           setState(() {
+//             _imageID2 = json.decode(imageRes.body!)['FileID'];
+//           });
+//         }
+//       }
+//       break;
+//       case 3: {
+//         setState(() {_imageFile3 = File(pickedFile.path);});
+//
+//         var imageRes = await uploadImage(File(pickedFile.path));
+//
+//         if (json.decode(imageRes.body!)['Status'] == 'success') {
+//           setState(() {
+//             _imageID3 = json.decode(imageRes.body!)['FileID'];
+//           });
+//         }
+//       }
+//       break;
+//     }
+//   }
+//
+//   pickeImageFromGallery(int i) async {
+//     final picker = ImagePicker();
+//
+//     final pickedFile = await picker.getImage(
+//       source: ImageSource.gallery,
+//       imageQuality: 50,
+//       maxHeight: 500,
+//       maxWidth: 500
+//     );
+//
+//     switch (i) {
+//       case 1: {
+//         setState(() {_imageFile1 = File(pickedFile.path);});
+//
+//         var imageRes = await uploadImage(File(pickedFile.path));
+//
+//         if (json.decode(imageRes.body!)['Status'] == 'success') {
+//           setState(() {
+//             _imageID1 = json.decode(imageRes.body!)['FileID'];
+//           });
+//         }
+//       }
+//       break;
+//       case 2: {
+//         setState(() {_imageFile2 = File(pickedFile.path);});
+//
+//         var imageRes = await uploadImage(File(pickedFile.path));
+//
+//         if (json.decode(imageRes.body!)['Status'] == 'success') {
+//           setState(() {
+//             _imageID2 = json.decode(imageRes.body!)['FileID'];
+//           });
+//         }
+//       }
+//       break;
+//       case 3: {
+//         setState(() {_imageFile3 = File(pickedFile.path);});
+//
+//         var imageRes = await uploadImage(File(pickedFile.path));
+//
+//         if (json.decode(imageRes.body!)['Status'] == 'success') {
+//           setState(() {
+//             _imageID3 = json.decode(imageRes.body!)['FileID'];
+//           });
+//         }
+//       }
+//       break;
+//     }
+//   }
+//
+//   @override
+//   Widget build (BuildContext context) {
+//     final Map receivedData = ModalRoute.of(context).settings.arguments;
+//
+//     _countDescriptionCharacter(String value) {
+//       setState(() {
+//         _descriptionCharCount = value.length;
+//       });
+//     }
+//
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//
+//       //App Bar
+//       appBar: new AppBar(
+//         leading: new IconButton(
+//           icon: new Icon(Icons.arrow_back, color: Color(0xffFF8F68)),
+//           onPressed: () {
+//             Navigator.pushNamed(
+//               context,
+//               '/edit_vehicle_features',
+//               arguments: receivedData['_carFeatures'],
+//             );
+//           },
+//         ),
+//         actions: <Widget>[
+//           Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               GestureDetector(
+//                 onTap: () {
+//
+//                 },
+//                 child: Center(
+//                   child: Container(
+//                     margin: EdgeInsets.only(right: 16),
+//                     child: Text('Remove',
+//                       style: TextStyle(
+//                         fontFamily: 'Urbanist',
+//                         fontSize: 16,
+//                         color: Color(0xffFF8F68),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//         elevation: 0.0,
+//       ),
+//
+//       //Content of tabs
+//       body: new SingleChildScrollView(
+//         child: GestureDetector(
+//           onTap: () {
+//             FocusScopeNode currentFocus = FocusScope.of(context);
+//
+//             if (!currentFocus.hasPrimaryFocus) {
+//               currentFocus.unfocus();
+//             }
+//           },
+//
+//           child: Padding(
+//           padding: EdgeInsets.all(16.0),
+//           child: Column(
+//             children: <Widget>[
+//               // Header
+//               Row(
+//                 children: <Widget>[
+//                   Expanded(
+//                     child: Column(
+//                       children: [
+//                         SizedBox(
+//                           width: double.maxFinite,
+//                           child: Container(
+//                             child: Text('Edit a feature',
+//                               style: TextStyle(
+//                                 fontFamily: 'Urbanist',
+//                                 fontSize: 36,
+//                                 color: Color(0xFF371D32),
+//                                 fontWeight: FontWeight.bold
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 30),
+//               // Sub header
+//               Row(
+//                 children: <Widget>[
+//                   Expanded(
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         SizedBox(
+//                           width: double.maxFinite,
+//                           child: Text('Describe your custom feature',
+//                             style: TextStyle(
+//                               fontFamily: 'Urbanist',
+//                               fontSize: 18,
+//                               color: Color(0xFF371D32),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 10),
+//               // Name
+//               Row(
+//                 children: <Widget>[
+//                   Expanded(
+//                     child: Column(
+//                       children: [
+//                         SizedBox(
+//                           width: double.maxFinite,
+//                           child: _nameShowInput ?
+//                             Container(
+//                               decoration: BoxDecoration(
+//                                 color: Color(0xFFF2F2F2),
+//                                 borderRadius: BorderRadius.circular(8.0)
+//                               ),
+//                               child: TextFormField(
+//                                 controller: _nameController,
+//                                 inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9.,&\- ]+$'))],
+//                                 decoration: InputDecoration(
+//                                   contentPadding: EdgeInsets.all(16.0),
+//                                   border: InputBorder.none,
+//                                   suffixIcon: GestureDetector(
+//                                     onTap: () {
+//                                       setState(() {
+//                                         _nameShowInput = false;
+//                                       });
+//                                     },
+//                                     child: Icon(Icons.check, color: Color(0xFFFF8F68)),
+//                                   ),
+//                                   hintText: 'Name'
+//                                 ),
+//                               ),
+//                             ) :
+//                             GestureDetector(
+//                               onTap: () {
+//                                 setState(() {
+//                                   _nameShowInput = true;
+//                                 });
+//                               },
+//                               child: Container(
+//                                 padding: EdgeInsets.all(16.0),
+//                                 decoration: new BoxDecoration(
+//                                   color: Color(0xFFF2F2F2),
+//                                   borderRadius: new BorderRadius.circular(8.0),
+//                                 ),
+//                                 child: Row(
+//                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                                   children: <Widget>[
+//                                     Container(
+//                                       child: Row(
+//                                         children: [
+//                                           Text('Name',
+//                                             style: TextStyle(
+//                                               fontFamily: 'Urbanist',
+//                                               fontSize: 16,
+//                                               color: Color(0xFF371D32),
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                     Container(
+//                                       child: Row(
+//                                         children: <Widget>[
+//                                           Text(_nameController.text,
+//                                             style: TextStyle(
+//                                               fontFamily: 'Urbanist',
+//                                               fontSize: 14,
+//                                               color: Color(0xFF353B50),
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 10),
+//               // Description
+//               Row(
+//                 children: <Widget>[
+//                   Expanded(
+//                     child: Column(
+//                       children: [
+//                         SizedBox(
+//                           width: double.maxFinite,
+//                           child: Container(
+//                             padding: EdgeInsets.all(16.0),
+//                             decoration: BoxDecoration(
+//                               color: Color(0xFFF2F2F2),
+//                               borderRadius: BorderRadius.circular(8.0)
+//                             ),
+//                             child: Column(
+//                               children: <Widget>[
+//                                 Row(
+//                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                                   children: <Widget>[
+//                                     Text('Description',
+//                                       style: TextStyle(
+//                                         fontFamily: 'Urbanist',
+//                                         fontSize: 16,
+//                                         color: Color(0xFF371D32),
+//                                       ),
+//                                     ),
+//                                     Text(_descriptionCharCount.toString() + '/500',
+//                                       style: TextStyle(
+//                                         fontFamily: 'Urbanist',
+//                                         fontSize: 14,
+//                                         color: Color(0xFF353B50),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 Column(
+//                                   children: <Widget>[
+//                                     TextFormField(
+//                                       textInputAction: TextInputAction.done,
+//                                       controller: _descriptionController,
+//                                       onChanged: _countDescriptionCharacter,
+//                                       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9.,&\- ]+$'))],
+//                                       minLines: 1,
+//                                       maxLines: 5,
+//                                       maxLength: 500,
+//                                       decoration: InputDecoration(
+//                                         border: InputBorder.none,
+//                                         hintText: 'Add feature description',
+//                                         hintStyle: TextStyle(
+//                                           fontFamily: 'Urbanist',
+//                                           fontSize: 14,
+//                                           fontStyle: FontStyle.italic
+//                                         ),
+//                                         counterText: '',
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 40),
+//               // Add photos
+//               Row(
+//                 children: <Widget>[
+//                   Expanded(
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         SizedBox(
+//                           width: double.maxFinite,
+//                           child: Text('Add photos',
+//                             style: TextStyle(
+//                               fontFamily: 'Urbanist',
+//                               fontSize: 18,
+//                               color: Color(0xFF371D32),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 10),
+//               // Image picker
+//               Row(
+//                 children: <Widget>[
+//                   Expanded(
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         GridView.count(
+//                           primary: false,
+//                           shrinkWrap: true,
+//                           crossAxisSpacing: 1,
+//                           mainAxisSpacing: 1,
+//                           crossAxisCount: 3,
+//                           children: <Widget>[
+//                             GestureDetector(
+//                               onTap: () => _settingModalBottomSheet(context, 1),
+//                               child: _imageID1 == '' ? Container(
+//                                 color: Colors.transparent,
+//                                 child: Container(
+//                                   child: Image.asset('icons/Add-Photo_Placeholder.png'),
+//                                   decoration: BoxDecoration(
+//                                     color: Color(0xFFF2F2F2),
+//                                     borderRadius: new BorderRadius.only(
+//                                       topLeft: const Radius.circular(12.0),
+//                                       bottomLeft: const Radius.circular(12.0),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ) : Container(
+//                                 alignment: Alignment.bottomCenter,
+//                                 width: 100,
+//                                 height: 100,
+//                                 decoration: new BoxDecoration(
+//                                   color: Color(0xFFF2F2F2),
+//                                   image: DecorationImage(
+//                                     image: NetworkImage('https://api.storage.ridealike.com/$_imageID1'),
+//                                     fit: BoxFit.fill,
+//                                   ),
+//                                   borderRadius: new BorderRadius.only(
+//                                     topLeft: const Radius.circular(12.0),
+//                                     bottomLeft: const Radius.circular(12.0),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                             GestureDetector(
+//                               onTap: () => _settingModalBottomSheet(context, 2),
+//                               child: _imageID2 == '' ? Container(
+//                                 child: Image.asset('icons/Add-Photo_Placeholder.png'),
+//                                 color: Color(0xFFF2F2F2),
+//                               ) : Container(
+//                                 alignment: Alignment.bottomCenter,
+//                                 width: 100,
+//                                 height: 100,
+//                                 decoration: new BoxDecoration(
+//                                   color: Color(0xFFF2F2F2),
+//                                   image: DecorationImage(
+//                                     image: NetworkImage('https://api.storage.ridealike.com/$_imageID2'),
+//                                     fit: BoxFit.fill,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                             GestureDetector(
+//                               onTap: () => _settingModalBottomSheet(context, 3),
+//                               child: Container(
+//                                 color: Colors.transparent,
+//                                 child: _imageID3 == '' ? Container(
+//                                   child: Image.asset('icons/Add-Photo_Placeholder.png'),
+//                                   decoration: BoxDecoration(
+//                                     color: Color(0xFFF2F2F2),
+//                                     borderRadius: new BorderRadius.only(
+//                                       topRight: const Radius.circular(12.0),
+//                                       bottomRight: const Radius.circular(12.0),
+//                                     ),
+//                                   ),
+//                                 ) : Container(
+//                                   alignment: Alignment.bottomCenter,
+//                                   width: 100,
+//                                   height: 100,
+//                                   decoration: new BoxDecoration(
+//                                     color: Color(0xFFF2F2F2),
+//                                     image: DecorationImage(
+//                                       image: NetworkImage('https://api.storage.ridealike.com/$_imageID3'),
+//                                       fit: BoxFit.fill,
+//                                     ),
+//                                     borderRadius: new BorderRadius.only(
+//                                       topRight: const Radius.circular(12.0),
+//                                       bottomRight: const Radius.circular(12.0),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 30),
+//               // Save button
+//               Row(
+//                 children: [
+//                   Expanded(
+//                     child: Column(
+//                       children: [
+//                         SizedBox(
+//                           width: double.maxFinite,
+//                           child: ElevatedButton(style: ElevatedButton.styleFrom(
+//                             elevation: 0.0,
+//                             color: Color(0xffFF8F68),
+//                             padding: EdgeInsets.all(16.0),
+//                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+//                             onPressed: () {
+//
+//                               int indexOfData = receivedData['_carFeatures']['_customFeatures'].indexOf(receivedData['_data']);
+//
+//                               setState(() {
+//                                 receivedData['_carFeatures']['_customFeatures'][indexOfData]['Name'] = _nameController.text;
+//                                 receivedData['_carFeatures']['_customFeatures'][indexOfData]['Description'] = _descriptionController.text;
+//                                 receivedData['_carFeatures']['_customFeatures'][indexOfData]['ImageIDs'] = [_imageID1, _imageID2, _imageID3];
+//                               });
+//
+//                               Navigator.pushNamed(
+//                                 context,
+//                                 '/edit_vehicle_features',
+//                                 arguments: receivedData['_carFeatures'],
+//                               );
+//                             },
+//                             child: Text('Save',
+//                               style: TextStyle(
+//                                 fontFamily: 'Urbanist',
+//                                 fontSize: 18,
+//                                 color: Colors.white
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// uploadImage(filename) async {
+//   var stream = new http.ByteStream(DelegatingStream.typed(filename.openRead()));
+//   var length = await filename.length();
+//
+//   var uri = Uri.parse('https://api.storage.ridealike.com/upload');
+//   var request = new http.MultipartRequest("POST", uri);
+//   var multipartFile = new http.MultipartFile('files', stream, length, filename: Path.basename(filename.path));
+//
+//   String jwt = await storage.read(key: 'jwt');
+//   Map<String, String> headers = { "Authorization": "Bearer $jwt"};
+//   request.headers.addAll(headers);
+//
+//   request.files.add(multipartFile);
+//   var response = await request.send();
+//
+//   var response2 = await http.Response.fromStream(response);
+//
+//   return response2;
+// }
